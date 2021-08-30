@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit page</title>
+</head>
+<body>
+<form th:method="PATCH" th:action="@{/product/{id}(id=${product.getId()})}" enctype="multipart/form-data" th:object="${product}">
+  <div>
+    <img th:src="@{/img/{filename}(filename = ${product.getFilename})}">
+  </div>
+  <label for="category">Категория: </label>
+  <input type="text" th:field="*{category}" id="category"/>
+  <input type="hidden" th:field="*{id}" id="id"/>
+  <br/>
+  <label for="manufacturer">Производитель: </label>
+  <input type="text" th:field="*{manufacturer}" id="manufacturer"/>
+  <br/>
+  <label for="model">Модель: </label>
+  <input type="text" th:field="*{model}" id="model"/>
+  <br/>
+  <label for="price">Стоимость: </label>
+  <input type="text" th:field="*{price}" id="price"/>
+  <br/>
+  <input type="hidden" th:field="*{filename}" id="filename"/>
+  <label> Обновить фото: </label>
+  <input type="file" name="file"/>
+  <br/>
+  <input type="submit" value="Обновить"/>
+</form>
+
+<form th:method="DELETE" th:action="@{/product/{id}(id=${product.getId()})}" th:object="${product}">
+  <input type="submit" value="Удалить"/>
+</form>
+
+<form th:method="POST" th:action="@{/order/{id}(id=${product.getId()})}" th:object="${product}">
+  <input type="submit" value="Заказать"/>
+</form>
+
+<a href="/main">Главная страница</a>
+</body>
+</html>

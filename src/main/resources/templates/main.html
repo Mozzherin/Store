@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Main page</title>
+    <link th:href="@{/styles/css/styles.css}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="form-style-2">
+    <form th:method="POST" th:action="@{/main}" enctype="multipart/form-data" th:object="${product}">
+        <label for="category">Категория: </label>
+        <input type="text" th:field="*{category}" id="category"/>
+        <div style="color:red" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">Category Error</div>
+
+        <input type="hidden" th:field="*{id}" id="id"/>
+        <br/>
+
+        <label for="manufacturer">Производитель: </label>
+        <input type="text" th:field="*{manufacturer}" id="manufacturer"/>
+        <div style="color:red" th:if="${#fields.hasErrors('manufacturer')}" th:errors="*{manufacturer}">Manufacturer Error</div>
+        <br/>
+
+        <label for="model">Модель: </label>
+        <input type="text" th:field="*{model}" id="model"/>
+        <div style="color:red" th:if="${#fields.hasErrors('model')}" th:errors="*{model}">Model Error</div>
+        <br/>
+
+        <label for="price">Стоимость: </label>
+        <input type="text" th:field="*{price}" id="price"/>
+        <div style="color:red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price Error</div>
+        <br/>
+
+        <label> Добавить фото: </label>
+        <input type="file" name="file"/>
+        <br/>
+        <input type="submit" value="Добавить"/>
+    </form>
+</div>
+
+    <form th:method="POST" th:action="@{/filter}">
+        <div><label> Категория: <input type="text" name="category"/> </label></div>
+        <div><label> Производитель: <input type="text" name="manufacturer"/> </label></div>
+        <div><label> Модель: <input type="text" name="model"/> </label></div>
+        <input type="submit" value="Найти"/>
+    </form>
+
+    <div th:each="product : ${products}">
+        <a th:href="@{/product/{id}(id=${product.getId()})}"
+           th:text="${product.getManufacturer() + ', ' + product.getModel() + ', ' + product.getPrice()}">Товары
+        </a>
+        <div>
+            <img th:src="@{/img/{filename}(filename = ${product.getFilename})}">
+        </div>
+    </div>
+    </div>
+
+    <div>
+        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
+        <a th:href="@{/user}">Список пользователей</a>
+        <a th:href="@{/order}">Список заказов</a>
+    </div>
+</body>
+</html>

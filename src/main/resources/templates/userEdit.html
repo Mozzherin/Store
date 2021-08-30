@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit page</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/user/{id}(id=${user.getId()})}" enctype="multipart/form-data" th:object="${user}">
+    <div>
+        <img th:src="@{/img/{photoProfile}(photoProfile = ${user.getPhotoProfile})}">
+    </div>
+    <label for="username">Логин: </label>
+    <input type="text" th:field="*{username}" id="username"/>
+    <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Login Error</div>
+    <br/>
+    <input type="hidden" th:field="*{id}" id="id"/>
+    <input type="hidden" th:field="*{roles}" id="roles"/>
+    </br>
+    <label for="password">Пароль: </label>
+    <input type="password" th:field="*{password}" id="password"/>
+    <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
+    <br/>
+    <label for="email">Email: </label>
+    <input type="text" th:field="*{email}" id="email"/>
+    <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
+    <br/>
+    <input type="hidden" th:field="*{photoProfile}" id="photoProfile"/>
+    <label> Обновить фото: </label>
+    <input type="file" name="file"/>
+    <br/>
+    <input type="submit" value="Обновить"/>
+</form>
+
+<form th:method="DELETE" th:action="@{/user/{id}(id=${user.getId()})}" th:object="${user}">
+    <input type="submit" value="Удалить"/>
+</form>
+<a href="/user">Список пользователей</a>
+</body>
+</html>
