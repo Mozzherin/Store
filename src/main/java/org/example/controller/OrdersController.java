@@ -14,7 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-public class OrderController {
+public class OrdersController {
     @Autowired
     private OrderService orderService;
     @Autowired
@@ -23,13 +23,13 @@ public class OrderController {
     private ProductService productService;
 
     @GetMapping("/order")
-    public String order(Model model) {
+    public String getOrderList(Model model) {
         model.addAttribute("orders", orderService.findAll());
         return "orders";
     }
 
     @PostMapping("/order/{id}")
-    public String addOrder(@AuthenticationPrincipal User user,
+    public String createNewOrder(@AuthenticationPrincipal User user,
                            @ModelAttribute("product") Product product,
                            Model model) {
 
@@ -49,7 +49,7 @@ public class OrderController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/order/{id}")
-    public String delete(@PathVariable Long id, Model model) {
+    public String deleteOrder(@PathVariable Long id, Model model) {
         orderService.delete(id);
         model.addAttribute("orders", orderService.findAll());
         return "orders";

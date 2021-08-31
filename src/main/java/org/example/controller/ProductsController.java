@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 
 @Controller
-public class ProductController {
+public class ProductsController {
     @Autowired
     private ProductService productService;
 
@@ -33,10 +33,10 @@ public class ProductController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/main")
-    public String addProduct(@ModelAttribute("product") @Valid Product product,
-                             BindingResult bindingResult,
-                             @RequestParam("file") MultipartFile file,
-                             Model model) {
+    public String createNewProduct(@ModelAttribute("product") @Valid Product product,
+                                   BindingResult bindingResult,
+                                   @RequestParam("file") MultipartFile file,
+                                   Model model) {
         if (bindingResult.hasErrors()) {
             return "main";
         }
@@ -47,7 +47,7 @@ public class ProductController {
     }
 
     @GetMapping("/product/{id}")
-    public String productEditForm(@PathVariable Long id, Model model) {
+    public String productDetails(@PathVariable Long id, Model model) {
         model.addAttribute("product", productService.findById(id));
         return "productEdit";
     }
@@ -64,9 +64,13 @@ public class ProductController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PatchMapping("/product/{id}")
-    public String update(@ModelAttribute("product") Product product,
-                         @RequestParam("file") MultipartFile file,
-                         Model model) {
+    public String updateProduct(@ModelAttribute("product") @Valid Product product,
+                                BindingResult bindingResult,
+                                @RequestParam("file") MultipartFile file,
+                                Model model) {
+        if (bindingResult.hasErrors()) {
+            return "productEdit";
+        }
         productService.update(product, file);
         model.addAttribute(productService.findAll());
         return "redirect:/main";
@@ -74,7 +78,7 @@ public class ProductController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/product/{id}")
-    public String delete(@PathVariable Long id, Model model) {
+    public String deleteProduct(@PathVariable Long id, Model model) {
         productService.delete(id);
         model.addAttribute(productService.findAll());
         return "redirect:/main";

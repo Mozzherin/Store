@@ -18,7 +18,7 @@
     <input type="hidden" th:field="*{roles}" id="roles"/>
     </br>
     <label for="password">Пароль: </label>
-    <input type="password" th:field="*{password}" id="password"/>
+    <input type="text" th:field="*{password}" id="password"/>
     <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
     <br/>
     <label for="email">Email: </label>

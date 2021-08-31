@@ -62,16 +62,16 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public boolean activateUser(String code) {
+    public void activateUser(String code) {
         User user = userRepository.findByActivationCode(code);
-
-        if (user == null) {
-            return false;
-        }
         userRepository.delete(user);
         user.setActive(true);
-        userRepository.save(setRole(user));
-        return true;
+        if (user.getUsername().equals("ADMIN")) {
+            user.setRoles(Collections.singleton(Role.ADMIN));
+        } else {
+            user.setRoles(Collections.singleton(Role.USER));
+        }
+        userRepository.save(user);
     }
 
     public List<User> findAll() {
@@ -95,15 +95,6 @@ public class UserService implements UserDetailsService {
             addPhoto(userToBeUpdated, file);
         }
         userRepository.save(userToBeUpdated);
-    }
-
-    public User setRole(User user) {
-        if (user.getUsername().equals("ADMIN")) {
-            user.setRoles(Collections.singleton(Role.ADMIN));
-        } else {
-            user.setRoles(Collections.singleton(Role.USER));
-        }
-        return user;
     }
 
     public void delete(long id) {

@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 
 @Controller
-public class UserController {
+public class UsersController {
     @Autowired
     private UserService userService;
 
@@ -30,9 +30,9 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public String addUser(@ModelAttribute("user") @Valid User user,
-                          BindingResult bindingResult,
-                          @RequestParam("file") MultipartFile file) {
+    public String createNewUserAndSendEmail(@ModelAttribute("user") @Valid User user,
+                                            BindingResult bindingResult,
+                                            @RequestParam("file") MultipartFile file) {
         if (bindingResult.hasErrors()) {
             return "registration";
         }
@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @GetMapping("/activate/{code}")
-    public String activate(@PathVariable String code) {
+    public String activateNewUser(@PathVariable String code) {
         userService.activateUser(code);
         return "redirect:/login";
     }
@@ -55,18 +55,20 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/user/{id}")
-    public String userEditForm(@PathVariable Long id, Model model) {
+    public String userProfile(@PathVariable Long id, Model model) {
         model.addAttribute("user", userService.findById(id));
-        System.out.println("OPEN " + userService.findById(id));
         return "userEdit";
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PatchMapping("/user/{id}")
-    public String update(@ModelAttribute("user") @Valid User user,
-                         @RequestParam("file") MultipartFile file,
-                         Model model) {
-        System.out.println(user);
+    public String updateUser(@ModelAttribute("user") @Valid User user,
+                             BindingResult bindingResult,
+                             @RequestParam("file") MultipartFile file,
+                             Model model) {
+        if (bindingResult.hasErrors()) {
+            return "userEdit";
+        }
         userService.update(user, file);
         model.addAttribute(userService.findAll());
         return "redirect:/user";
@@ -74,7 +76,7 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/user/{id}")
-    public String delete(@PathVariable Long id, Model model) {
+    public String deleteUser(@PathVariable Long id, Model model) {
         userService.delete(id);
         model.addAttribute(userService.findAll());
         return "redirect:/user";

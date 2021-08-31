@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Edit page</title>
@@ -11,16 +11,20 @@
   </div>
   <label for="category">Категория: </label>
   <input type="text" th:field="*{category}" id="category"/>
+  <div style="color:red" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">Category Error</div>
   <input type="hidden" th:field="*{id}" id="id"/>
   <br/>
   <label for="manufacturer">Производитель: </label>
   <input type="text" th:field="*{manufacturer}" id="manufacturer"/>
+  <div style="color:red" th:if="${#fields.hasErrors('manufacturer')}" th:errors="*{manufacturer}">Manufacturer Error</div>
   <br/>
   <label for="model">Модель: </label>
   <input type="text" th:field="*{model}" id="model"/>
+  <div style="color:red" th:if="${#fields.hasErrors('model')}" th:errors="*{model}">Model Error</div>
   <br/>
   <label for="price">Стоимость: </label>
   <input type="text" th:field="*{price}" id="price"/>
+  <div style="color:red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price Error</div>
   <br/>
   <input type="hidden" th:field="*{filename}" id="filename"/>
   <label> Обновить фото: </label>
