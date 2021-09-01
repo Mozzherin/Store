@@ -55,9 +55,10 @@ public class ProductsController {
     @PostMapping("filter")
     public String filter(@RequestParam String category,
                          @RequestParam String manufacturer,
-                         @RequestParam String model,
+                         @RequestParam String priceFrom,
+                         @RequestParam String priceTo,
                          Model modelView) {
-        modelView.addAttribute("products", productService.findProduct(category, manufacturer, model));
+        modelView.addAttribute("products", productService.findProduct(category, manufacturer, priceFrom, priceTo));
         modelView.addAttribute("product", new Product());
         return "main";
     }

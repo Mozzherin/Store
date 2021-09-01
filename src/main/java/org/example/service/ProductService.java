@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,23 +63,27 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public List<Product> findProduct(String category, String manufacturer, String model) {
-        if (!category.isEmpty() && manufacturer.isEmpty() && model.isEmpty()) {
-            return productRepository.findByCategory(category);
-        } else if (category.isEmpty() && !manufacturer.isEmpty() && model.isEmpty()) {
-            return productRepository.findByManufacturer(manufacturer);
-        } else if (category.isEmpty() && manufacturer.isEmpty() && !model.isEmpty()) {
-            return productRepository.findByModel(model);
-        } else if (!category.isEmpty() && !manufacturer.isEmpty() && model.isEmpty()) {
-            return productRepository.findByCategoryAndManufacturer(category, manufacturer);
-        } else if (!category.isEmpty() && manufacturer.isEmpty() && !model.isEmpty()) {
-            return productRepository.findByCategoryAndModel(category, model);
-        } else if (category.isEmpty() && !manufacturer.isEmpty() && !model.isEmpty()) {
-            return productRepository.findByManufacturerAndModel(manufacturer, model);
-        } else if (!category.isEmpty() && !manufacturer.isEmpty() && !model.isEmpty()) {
-            return productRepository.findByCategoryAndManufacturerAndModel(category, manufacturer, model);
+    public List<Product> findProduct(String category, String manufacturer, String priceFrom, String priceTo) {
+        System.out.println("category " + category);
+        System.out.println("manufacturer " + manufacturer);
+        System.out.println("priceFrom " + priceFrom);
+        System.out.println("priceTo " + priceTo);
+        List<Product> productList = productRepository.findAll();
+
+        if (!category.isEmpty()) {
+            productList.removeIf(product -> !product.getCategory().equals(category));
         }
-        return productRepository.findAll();
+        if (!manufacturer.isEmpty()) {
+            productList.removeIf(product -> !product.getCategory().equals(category));
+        }
+        if (!priceFrom.isEmpty()) {
+            productList.removeIf(product -> product.getPrice() < Double.parseDouble(priceFrom));
+        }
+        if (!priceTo.isEmpty()) {
+            productList.removeIf(product -> product.getPrice() > Double.parseDouble(priceTo));
+        }
+
+        return productList;
 
     }
 }

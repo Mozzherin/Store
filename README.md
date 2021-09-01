@@ -1,6 +1,6 @@
 # Store
 Данный проект представляет собой интернет магазин электроники(GRUD приложение).
-Используемый стек технологий: Intellij Idea, Maven, PosrgeSQL, Spring Boot, Thymeleaf, Lombok, Hibernate, Spring security, Spring mail.
+Используемый стек технологий: Intellij Idea, Maven, PosrgeSQL, Spring Boot, Spring security, Spring mail, Thymeleaf, Lombok, Hibernate, ORM.
 Перед запуском проекта необходимо установить СУБД PostgreSQL и создать базу данных shop.
 В файле application.properties указываем свои данные:
    PostgreSQL:
