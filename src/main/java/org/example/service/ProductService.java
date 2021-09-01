@@ -64,10 +64,6 @@ public class ProductService {
     }
 
     public List<Product> findProduct(String category, String manufacturer, String priceFrom, String priceTo) {
-        System.out.println("category " + category);
-        System.out.println("manufacturer " + manufacturer);
-        System.out.println("priceFrom " + priceFrom);
-        System.out.println("priceTo " + priceTo);
         List<Product> productList = productRepository.findAll();
 
         if (!category.isEmpty()) {
